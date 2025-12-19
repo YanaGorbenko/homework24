@@ -17,12 +17,12 @@ console.log('Сума зарплат усіх користувачів: ', users
 
 // 2 Сума зарплат активних користувачів
 console.log('Task 2');
-let activeUsersSalarySum1 = 0;
-users
+let activeUsersSalarySum1 = users
   .filter(user => user.active)
-  .forEach(user => {
-    activeUsersSalarySum1 += user.salary;
-  });
+  .reduce((acc, user) => {
+    acc += user.salary;
+    return acc;
+  }, 0);
 console.log('Сума зарплат усіх активних користувачів: ', activeUsersSalarySum1);
 
 // 3 Кількість користувачів (через reduce)
@@ -34,9 +34,13 @@ console.log('Кількість користувачів: ', numberOfUsers);
 
 //4 Середній вік користувачів
 console.log('Task 4');
-const middleAges =
-  users.reduce((acc, user) => acc + user.age, 0) /
-  users.reduce((acc, user) => acc + 1, 0);
+const middleAges = users.reduce((acc, user, index) => {
+  acc += user.age;
+  if (index === users.length - 1) {
+    acc /= users.length;
+  }
+  return acc;
+}, 0);
 console.log('Середній вік користувачів: ', middleAges);
 
 // 5 Об’єкт відповідності id → name
@@ -74,7 +78,7 @@ const userWithMaxSalary = users.reduce((acc, user, index) => {
     acc = user;
   }
   return acc;
-}, {});
+}, users[0]);
 console.log('Користувач з найбільшою зарплатою ', userWithMaxSalary);
 
 // 8 Сума зарплат за віковими групами
@@ -139,7 +143,7 @@ const sortedUsersforAge = users.toSorted((a, b) => a.age - b.age);
 console.log('Сортування за віком', sortedUsersforAge);
 
 // 15 Сортування активних за зарплатою
-console.log('Task 14');
+console.log('Task 15');
 const sortedActiveUsersforSalary = users
   .filter(user => user.active)
   .toSorted((a, b) => b.salary - a.salary);
